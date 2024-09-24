@@ -66,7 +66,6 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	// Draw bird
 	ebitenutil.DrawCircle(screen, 100, g.state.Bird.Y, g.state.Bird.Radius, clrM.Apply(color.White))
 
-	// Draw pipes using vector.DrawFilledRect
 	for _, p := range g.state.Pipes {
 		// Top pipe
 		ebitenutil.DrawRect(screen, p.X, 0, 50, p.Y, clrM.Apply(color.White))
