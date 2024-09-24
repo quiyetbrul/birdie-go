@@ -1,4 +1,4 @@
-package presentation
+package ui
 
 import (
 	"birdie-go/src/data"
@@ -9,7 +9,6 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/colorm"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
-	"github.com/hajimehoshi/ebiten/v2/vector"
 )
 
 type Game struct {
@@ -23,7 +22,6 @@ func NewGame() *Game {
 }
 
 func (g *Game) Update() error {
-	// If the game is over and space is pressed, reset the game
 	if g.state.GameOver {
 		if ebiten.IsKeyPressed(ebiten.KeySpace) {
 			g.state.ResetGame()
@@ -39,7 +37,7 @@ func (g *Game) Update() error {
 		return nil
 	}
 
-	// Game is running, handle bird movement and game logic
+	// Bird physics and input
 	if ebiten.IsKeyPressed(ebiten.KeySpace) {
 		logic.BirdJump(g.state)
 	}
@@ -68,13 +66,13 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	// Draw bird
 	ebitenutil.DrawCircle(screen, 100, g.state.Bird.Y, g.state.Bird.Radius, clrM.Apply(color.White))
 
-	// Draw pipes using vector.Path for rectangles
+	// Draw pipes using vector.DrawFilledRect
 	for _, p := range g.state.Pipes {
-		// Draw the top pipe
-		drawFilledRect(screen, float32(p.X), 0, 50, float32(p.Y))
+		// Top pipe
+		ebitenutil.DrawRect(screen, p.X, 0, 50, p.Y, clrM.Apply(color.White))
 
-		// Draw the bottom pipe
-		drawFilledRect(screen, float32(p.X), float32(p.Y+g.state.PipeGap), 50, float32(600-p.Y-g.state.PipeGap))
+		// Bottom pipe
+		ebitenutil.DrawRect(screen, p.X, p.Y+g.state.PipeGap, 50, 600-p.Y-g.state.PipeGap, clrM.Apply(color.White))
 	}
 
 	// Draw score
@@ -93,20 +91,4 @@ func (g *Game) Draw(screen *ebiten.Image) {
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
 	return 400, 600
-}
-
-// drawFilledRect draws a filled rectangle using vector.Path
-func drawFilledRect(screen *ebiten.Image, x, y, width, height float32) {
-	var path vector.Path
-	path.MoveTo(x, y)
-	path.LineTo(x+width, y)
-	path.LineTo(x+width, y+height)
-	path.LineTo(x, y+height)
-	path.Close()
-
-	op := &ebiten.DrawTrianglesOptions{}
-	op.FillRule = ebiten.FillAll
-
-	vs, is := path.AppendVerticesAndIndicesForFilling(nil, nil)
-	screen.DrawTriangles(vs, is, ebiten.NewImageFromImage(nil), op)
 }

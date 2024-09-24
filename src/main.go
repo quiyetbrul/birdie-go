@@ -3,8 +3,9 @@ package main
 import (
 	"log"
 
+	"birdie-go/src/ui"
+
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/quiyetbrul/birdie-go/ui"
 )
 
 func main() {
