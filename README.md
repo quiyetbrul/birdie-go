@@ -2,7 +2,7 @@
 
 This is a simple clone of the popular game **Flappy Bird** written in **Golang** using the **Ebiten** game development library. The game follows the same basic gameplay mechanics: the player controls a bird, attempting to fly between obstacles (pipes) without hitting them.
 
-I also have it in CPP using the SFML library [here](https://github.com/quiyetbrul/flappy_bird), that's why repo is named birdie-go
+I also have it in CPP using the SFML [here](https://github.com/quiyetbrul/flappy_bird), that's why repo is named birdie-go
 
 ## Features
 
